@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Sanamente</string>
+    <string-array name="dias">
+        <item>LUNES</item>
+        <item>MARTES</item>
+        <item>MIERCOLES</item>
+        <item>JUEVES</item>
+        <item>VIERNES</item>
+        <item>SABADO</item>
+        <item>DOMINGO</item>
+    </string-array>
+</resources>
