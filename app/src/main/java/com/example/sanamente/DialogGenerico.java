@@ -19,18 +19,14 @@ import java.util.List;
 
 public class DialogGenerico extends DialogFragment  implements AdapterView.OnItemSelectedListener {
 
-   private String mensaje;
-   private String titulo;
-   private Boolean personalizado = false;
+
 
     List<MensajeModel> mensajes;
     Integer indice;
     MainActivity mainActivity;
 
-   public DialogGenerico(String mensaje, String titulo, Boolean personalizado, List<MensajeModel> mensajes, Integer indice, MainActivity mainActivity){
-       this.mensaje = mensaje;
-       this.titulo = titulo;
-       this.personalizado = personalizado;
+   public DialogGenerico( List<MensajeModel> mensajes, Integer indice, MainActivity mainActivity){
+
        this.mensajes = mensajes;
        this.mainActivity = mainActivity;
        this.indice = indice;
@@ -42,35 +38,31 @@ public class DialogGenerico extends DialogFragment  implements AdapterView.OnIte
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-
-        if(personalizado)
-        {
-            View dialogPersonalizado = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_personalizado,null);
-
+        builder.setTitle("Modificar");
+        View dialogPersonalizado = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_personalizado,null);
             builder.setView(dialogPersonalizado);
+            EditText ETnombre = dialogPersonalizado.findViewById(R.id.textoedit1);
+            ETnombre.setText(this.mensajes.get(indice).getMensaje());
+        EditText ETnombrePost = dialogPersonalizado.findViewById(R.id.textoedit2);
+        ETnombrePost.setText(this.mensajes.get(indice).getMensajePost());
 
-            EditText ETnombre = dialogPersonalizado.findViewById(R.id.texto);
-            Spinner spinnerDias = dialogPersonalizado.findViewById(R.id.spinner1);
+            Spinner spinnerDias = dialogPersonalizado.findViewById(R.id.spinnerDias);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),R.array.dias,android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            ETnombre.setText(this.mensajes.get(indice).getMensaje());
             spinnerDias.setAdapter(adapter);
-
             spinnerDias.setOnItemSelectedListener(this);
 
+            Spinner spinnerHoras = dialogPersonalizado.findViewById(R.id.spinnerHoras);
+            ArrayAdapter<CharSequence> adapterHoras = ArrayAdapter.createFromResource(this.getContext(),R.array.horas,android.R.layout.simple_spinner_item);
+            adapterHoras.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerHoras.setAdapter(adapterHoras);
+            spinnerHoras.setOnItemSelectedListener(this);
 
-            clickDialogGeneric clickDialog = new clickDialogGeneric(this.mensajes,  this.indice,ETnombre,this.mainActivity);
+
+            clickDialogGeneric clickDialog = new clickDialogGeneric(this.mensajes,  this.indice,ETnombre,ETnombrePost,this.mainActivity,spinnerHoras,spinnerHoras);
             //  builder.setNegativeButton("negative",clickDialog);
-            builder.setPositiveButton("positivo",clickDialog);
-        }else{
-            builder.setMessage(this.mensaje);
+            builder.setPositiveButton("Aceptar",clickDialog);
 
-            clickDialogGeneric clickDialog = new clickDialogGeneric();
-          //  builder.setNegativeButton("negative",clickDialog);
-            builder.setPositiveButton("positivo",clickDialog);
-         //   builder.setNeutralButton("neutral",clickDialog);
-
-        }
 
         return builder.create();
     }
@@ -78,8 +70,21 @@ public class DialogGenerico extends DialogFragment  implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String text = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(),text,Toast.LENGTH_SHORT).show();
+       String horas;
+       String dias ;
+    String texto = parent.getItemAtPosition(position).toString();
+       if(parent.getId()==R.id.spinnerDias){
+           dias = texto;
+           this.mensajes.get(this.indice).setVariableDia(dias);
+        }
+        if(parent.getId()==R.id.spinnerHoras){
+            horas = texto;
+            this.mensajes.get(this.indice).setVariableHora(horas);
+        }
+        this.mainActivity.notificarCambios(this.indice);
+
+
+        Toast.makeText(parent.getContext(),texto,Toast.LENGTH_SHORT).show();
     }
 
     @Override

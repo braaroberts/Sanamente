@@ -23,6 +23,7 @@ public class OnClickListener implements View.OnClickListener {
 
 
         MainActivity.mensajes.add(model);
+
         this.activity2.finish();
 
 

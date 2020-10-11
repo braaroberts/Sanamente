@@ -13,11 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/butonShare"
-            android:drawableBottom="@android:drawable/ic_menu_share"></Button>
+
         <Button
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -29,18 +25,20 @@
             android:id="@+id/butonShare3"
             android:drawableBottom="@android:drawable/star_big_off"></Button>
 
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/butonShare4"
-            android:drawableBottom="@android:drawable/star_off" />
+
 
         <Button
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="220dp"
             android:id="@+id/edit"
             android:drawableBottom="@android:drawable/ic_menu_edit" />
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/delete"
+            android:drawableBottom="@android:drawable/ic_delete" />
 
     </LinearLayout>
 

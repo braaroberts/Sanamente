@@ -11,26 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MensajeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     public TextView tvMensaje;
+    public TextView tvMensaje2;
     public Integer id;
-    public Button share;
     public Button share2;
     public Button share3;
-    public Button share4;
+    public Button delete;
     public Button edit;
     MainActivity main;
     public MensajeViewHolder(@NonNull View itemView, MainActivity main) {
         super(itemView);
         tvMensaje= this.itemView.findViewById(R.id.texto);
-        share = this.itemView.findViewById(R.id.butonShare);
         share2 = this.itemView.findViewById(R.id.butonShare2);
         share3 = this.itemView.findViewById(R.id.butonShare3);
-        share4 = this.itemView.findViewById(R.id.butonShare4);
+        delete = this.itemView.findViewById(R.id.delete);
         edit = this.itemView.findViewById(R.id.edit);
         OnClickListenerGeneric onclick = new OnClickListenerGeneric(main,this);
-        share.setOnClickListener(onclick);
+        delete.setOnClickListener(onclick);
         share2.setOnClickListener(onclick);
         share3.setOnClickListener(onclick);
-        share4.setOnClickListener(onclick);
         edit.setOnClickListener(onclick);
         this.main = main;
 

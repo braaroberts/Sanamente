@@ -7,17 +7,5 @@
     app:showAsAction="ifRoom"
     android:icon="@android:drawable/btn_star"
 />
-    <item android:id="@+id/op2"
-        android:title="Opcion 2"
-        android:orderInCategory="101"
-        app:showAsAction="ifRoom"
-        android:icon="@android:drawable/title_bar"
-        />
 
-    <item android:id="@+id/op3"
-        android:title="Opcion 3"
-        android:orderInCategory="102"
-        app:showAsAction="ifRoom"
-        android:icon="@android:drawable/title_bar"
-        />
 </menu>

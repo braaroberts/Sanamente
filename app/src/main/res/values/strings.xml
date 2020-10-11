@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Sanamente</string>
     <string-array name="dias">
+        <item></item>
+        <item>HOY</item>
         <item>LUNES</item>
         <item>MARTES</item>
         <item>MIERCOLES</item>
@@ -8,5 +10,37 @@
         <item>VIERNES</item>
         <item>SABADO</item>
         <item>DOMINGO</item>
+    </string-array>
+    <string-array name="horas">
+        <item></item>
+        <item>a las 09.00hs.</item>
+        <item>a las 09.30hs.</item>
+        <item>a las 10.00hs.</item>
+        <item>a las 10.30hs.</item>
+        <item>a las 11.00hs.</item>
+        <item>a las 11.30hs.</item>
+        <item>a las 12.00hs.</item>
+        <item>a las 12.30hs.</item>
+        <item>a las 13.00hs.</item>
+        <item>a las 13.30hs.</item>
+        <item>a las 14.00hs.</item>
+        <item>a las 14.30hs.</item>
+        <item>a las 15.00hs.</item>
+        <item>a las 15.30hs.</item>
+        <item>a las 16.00hs.</item>
+        <item>a las 16.30hs.</item>
+        <item>a las 17.00hs.</item>
+        <item>a las 17.30hs.</item>
+        <item>a las 18.00hs.</item>
+        <item>a las 18.30hs.</item>
+        <item>a las 19.00hs.</item>
+        <item>a las 19.30hs.</item>
+        <item>a las 20.00hs.</item>
+        <item>a las 20.30hs.</item>
+        <item>a las 21.00hs.</item>
+        <item>a las 21.30hs.</item>
+
+
+
     </string-array>
 </resources>
