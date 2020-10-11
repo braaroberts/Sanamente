@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Sanamente</string>
     <string-array name="dias">
-        <item></item>
+        <item/>
         <item>HOY</item>
         <item>LUNES</item>
         <item>MARTES</item>
@@ -12,7 +12,7 @@
         <item>DOMINGO</item>
     </string-array>
     <string-array name="horas">
-        <item></item>
+        <item/>
         <item>a las 09.00hs.</item>
         <item>a las 09.30hs.</item>
         <item>a las 10.00hs.</item>

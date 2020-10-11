@@ -24,7 +24,7 @@ public class MensajeModel {
             salida+=mensaje;
         }
         if(variableDia!= null){
-            if(variableDia=="HOY"){
+            if(variableDia.trim().toLowerCase().equals("hoy")||variableDia.trim().toLowerCase().equals("")){
                 salida+=" "+variableDia;
             }else{
                 salida+=" el "+variableDia;

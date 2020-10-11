@@ -39,15 +39,15 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     static List<MensajeModel> mensajes = null;
     MensajeAdapter mensajesAdapter = new MensajeAdapter(this);
-    String cacheDir;
+    String cacheDirection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cacheDir =   getCacheDir().getAbsolutePath()+"/MiCache";
+        cacheDirection =   getCacheDir().getAbsolutePath()+"/MiCache";
 
-        mensajes = new ArrayList<MensajeModel>();
+        mensajes = new ArrayList<>();
         IniciarFromCache();
 
         //Toast.makeText(getBaseContext(), fromCache(getCacheDir().getAbsolutePath()+"/MiCache"),Toast.LENGTH_SHORT).show();
@@ -65,51 +65,40 @@ public class MainActivity extends AppCompatActivity {
         ab.setTitle("Mensajes");
         ab.setDisplayHomeAsUpEnabled(true);
     }
-
+    @Override
+    protected void onResume() {
+        toCache(cacheDirection,toJson(mensajes));
+        actualizarListaGeneral();
+        super.onResume();
+    }
     @Override
     protected void onStop() {
-        toCache(cacheDir,toJson(mensajes));
+        toCache(cacheDirection,toJson(mensajes));
         super.onStop();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_option,menu);
 
-
-    public void borrar(Integer indice) {
-        Log.d("Seguimiento","Intentando borrar el indice "+indice);
-
-        mensajes.remove(mensajes.get(indice));
-        toCache(cacheDir,toJson(mensajes));
-        this.IniciarFromCache();
-       this.mensajesAdapter.notifyDataSetChanged();
-
-    }
-    public void modificar(Integer indice){
-        //Log.d("seguimiento",mensajes.get(indice).getMensaje());
-        DialogGenerico dialog = new DialogGenerico(mensajes,indice,this);
-        dialog.show(getSupportFragmentManager(),"etiqueta");
-    }
-    public void notificarCambios(Integer indice){
-        this.mensajesAdapter.notifyItemChanged(indice);
+        // MenuItem menuItem = menu.findItem(R.id.campo_buscar);
+        //    SearchView searchView = (SearchView) menuItem.getActionView();
+        //searchView.setOnQueryTextListener(this);
+        return super.onCreateOptionsMenu(menu);
     }
 
-    public void controlWpp(String boton,Integer indice){
-        switch (boton){
-            case "1":
-                this.enviaMensajeWhatsApp(mensajes.get(indice).getMensajeCompleto());
-                break;
-            case "2":
-                this.enviaMensajeWhatsApp(mensajes.get(indice).getMensajeCompleto());
-                break;
-            case "3":
-                this.enviaMensajeWhatsApp3(mensajes.get(indice).getMensajeCompleto(), "+5491123086894");
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-                break;
-            case "4":
-                this.enviaMensajeWhatsApp4(mensajes.get(indice).getMensajeCompleto(), "+5491123086894");
-
-                break;
+        if(item.getItemId()==R.id.op1) {
+            Intent intent = new Intent(this, AgregarActivity.class);
+            startActivity(intent);
+            Log.d("Click", "Se hizo Click en la opt1");
         }
+        else if(item.getItemId()== android.R.id.home){
 
-        this.mensajesAdapter.notifyItemChanged(indice);
+            super.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void enviaMensajeWhatsApp(String msj) {
@@ -153,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                     .show();
         }
     }
-
     public void enviaMensajeWhatsApp3(String msj,String numeroTelefono) {
          // Aquí va el número de teléfono, no olvidar el código de pais al inicio
         try {
@@ -184,43 +172,69 @@ public class MainActivity extends AppCompatActivity {
                     .show();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_option,menu);
-
-       // MenuItem menuItem = menu.findItem(R.id.campo_buscar);
-    //    SearchView searchView = (SearchView) menuItem.getActionView();
-       //searchView.setOnQueryTextListener(this);
-        return super.onCreateOptionsMenu(menu);
+    public String getCacheDirection() {
+        return cacheDirection;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if(item.getItemId()==R.id.op1) {
-            Intent intent = new Intent(this, AgregarActivity.class);
-            startActivity(intent);
-            Log.d("Click", "Se hizo Click en la opt1");
-        }
-        else if(item.getItemId()== android.R.id.home){
-
-            super.finish();
-        }
-        return super.onOptionsItemSelected(item);
+    public List<MensajeModel> getMensajes() {
+        return mensajes;
     }
 
-    public void IniciarFromCache(){
-        MensajeModel[] lista = fromJson(fromCache(cacheDir));
-        if(lista!=null){
-            mensajes.clear();
-            for (MensajeModel msj :
-                    lista) {
-                mensajes.add(msj);
-            }
-        }
+    public void cambiarVariables(String tipo, String valor,Integer id) {
+    Log.d("Seguimiento", "main-cambiarVariables;tipo:" + tipo + "valor;" + valor + "id;" + id);
+
+    //TODO aca  esta modificando el preselected de los spinner porque se ejecuta al inciiar la app, el onItemSelected. Preguntar
+    if (tipo.equals("HORAS")) {
+        mensajes.get(id).setVariableHora(valor);
+        actualizarListaGeneral();
+    } else if (tipo.equals("DIAS")) {
+        mensajes.get(id).setVariableDia(valor);
+        actualizarListaGeneral();
+    }
+    }
+    public void actualizarListaGeneral(){
+        toCache(cacheDirection, toJson(mensajes));
+        this.IniciarFromCache();
+        this.mensajesAdapter.notifyDataSetChanged();
+    }
+    public void borrar(Integer indice) {
+        Log.d("Seguimiento","Intentando borrar el indice "+indice);
+
+        mensajes.remove(mensajes.get(indice));
+        toCache(cacheDirection,toJson(mensajes));
+        this.IniciarFromCache();
+        this.mensajesAdapter.notifyDataSetChanged();
 
     }
+    public void modificar(Integer indice){
+        //Log.d("seguimiento",mensajes.get(indice).getMensaje());
+        DialogGenerico dialog = new DialogGenerico(mensajes,indice,this);
+        dialog.show(getSupportFragmentManager(),"etiqueta");
+    }
+    public void notificarCambios(Integer indice){
+        this.mensajesAdapter.notifyItemChanged(indice);
+    }
+
+    public void controlWpp(String boton,Integer indice){
+        switch (boton){
+            case "1":
+                this.enviaMensajeWhatsApp(mensajes.get(indice).getMensajeCompleto());
+                break;
+            case "2":
+                this.enviaMensajeWhatsApp(mensajes.get(indice).getMensajeCompleto());
+                break;
+            case "3":
+                this.enviaMensajeWhatsApp3(mensajes.get(indice).getMensajeCompleto(), "+5491123086894");
+
+                break;
+            case "4":
+                this.enviaMensajeWhatsApp4(mensajes.get(indice).getMensajeCompleto(), "+5491123086894");
+                break;
+        }
+
+        this.mensajesAdapter.notifyItemChanged(indice);
+    }
+
     public String toJson(Object obj){
         Gson gson = new Gson();
         return gson.toJson(obj);
@@ -229,6 +243,17 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         MensajeModel[] data = gson.fromJson(json, MensajeModel[].class);
         return data;
+    }
+    public void IniciarFromCache(){
+        MensajeModel[] lista = fromJson(fromCache(cacheDirection));
+        if(lista!=null){
+            mensajes.clear();
+            for (MensajeModel msj :
+                    lista) {
+                mensajes.add(msj);
+            }
+        }
+
     }
     public void toCache(String url, String content) {
         File dir = getApplicationContext().getCacheDir();
@@ -280,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
 
 
 }
